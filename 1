@@ -1,0 +1,159 @@
+local player = game.Players.LocalPlayer
+
+loadstring(game:HttpGet("https://pastebin.com/raw/M17VFji3"))() -- Use vital script automatically
+
+-- :: Teleports :: --
+local spinelArea = Vector3.new(-1402, -272, 502)
+local apatiteArea = Vector3.new(-466,-110,205)
+local serpentineArea = Vector3.new(-167, -231, 1060)
+local volcanoArea = Vector3.new(729, 13, 668)
+local waterfallArea = Vector3.new(102, 21, 584)
+
+-- :: GUI Maker From Another Old Script :: --
+
+function createGui()
+	local gui = Instance.new("ScreenGui", player.PlayerGui)
+	gui.Name = "theLostLands"
+	gui.ResetOnSpawn = false
+	gui.Enabled = true
+	gui.IgnoreGuiInset = true
+	return gui
+end
+
+function createFrame(guiParent)
+	local frame = Instance.new("Frame")
+	frame.Parent = guiParent
+	frame.AnchorPoint = Vector2.new(0.5,0.5)
+	frame.BackgroundColor3 = Color3.fromRGB(35,35,35)
+	frame.BorderSizePixel = 0
+	frame.Position = UDim2.new(0.5,0,0.5,0)
+	frame.Size = UDim2.new(0, 145, 0, 176)
+	local title = Instance.new("TextLabel", frame)
+	title.BackgroundColor3 = Color3.new(30,30,30)
+	title.BorderSizePixel = 0
+	title.BackgroundColor3 = Color3.fromRGB(30,30,30)
+	title.BorderSizePixel = 0
+	title.Size = UDim2.new(0, 145, 0, 18)
+	title.Font = Enum.Font.SourceSansBold
+	title.Text = " The Lost Land                     ="
+	title.TextSize = 14
+	title.TextColor3 = Color3.new(1,1,1)
+	title.TextXAlignment = Enum.TextXAlignment.Left
+	return frame
+end
+
+function createButton(frameParent, yPos, text)
+	local button = Instance.new("TextButton")
+	button.Name = "button"
+	button.Parent = frameParent
+	button.BackgroundColor3 = Color3.fromRGB(30,30,30)
+	button.BorderSizePixel = 0
+	button.Position = UDim2.new(0,0,0,yPos)
+	button.Size = UDim2.new(1,0,00,18)
+	button.Font = Enum.Font.SourceSansBold
+	button.Text = text
+	button.TextSize = 14
+	button.TextColor3 = Color3.new(1,1,1)
+	return button
+end
+
+-- :: Main Script :: --
+
+local gui = createGui()
+
+local frame = createFrame(gui)
+
+local b1 = createButton(frame, 25, "Volcano")
+local b2 = createButton(frame, 49, "Waterfall")
+local b3 = createButton(frame, 73, "Apatite Area")
+local b4 = createButton(frame, 97, "Serpentine Area")
+local b5 = createButton(frame, 121, "Spinel Area")
+
+local rejoinB = createButton(frame, 158, "REJOIN")
+
+b1.Activated:Connect(function()
+	if player and player.Character then
+		local humRoot = player.Character:FindFirstChild("HumanoidRootPart")
+		if humRoot then
+			humRoot.CFrame = CFrame.new(volcanoArea + Vector3.new(0, 4, 0))
+		end
+	end
+end)
+
+b2.Activated:Connect(function()
+	if player and player.Character then
+		local humRoot = player.Character:FindFirstChild("HumanoidRootPart")
+		if humRoot then
+			humRoot.CFrame = CFrame.new(waterfallArea + Vector3.new(0, 4, 0))
+		end
+	end
+end)
+
+b3.Activated:Connect(function()
+	if player and player.Character then
+		local humRoot = player.Character:FindFirstChild("HumanoidRootPart")
+		if humRoot then
+			humRoot.CFrame = CFrame.new(apatiteArea + Vector3.new(0, 4, 0))
+		end
+	end
+end)
+
+b4.Activated:Connect(function()
+	if player and player.Character then
+		local humRoot = player.Character:FindFirstChild("HumanoidRootPart")
+		if humRoot then
+			humRoot.CFrame = CFrame.new(serpentineArea + Vector3.new(0, 4, 0))
+		end
+	end
+end)
+
+b5.Activated:Connect(function()
+	if player and player.Character then
+		local humRoot = player.Character:FindFirstChild("HumanoidRootPart")
+		if humRoot then
+			humRoot.CFrame = CFrame.new(spinelArea + Vector3.new(0, 4, 0))
+		end
+	end
+end)
+
+rejoinB.Activated:Connect(function()
+	game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, player)
+end)
+
+local UIS = game:GetService("UserInputService")
+function dragify(Frame)
+	dragToggle = nil
+	local dragSpeed = 0
+	dragInput = nil
+	dragStart = nil
+	local dragPos = nil
+	function updateInput(input)
+		local Delta = input.Position - dragStart
+		local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
+		game:GetService("TweenService"):Create(Frame, TweenInfo.new(0.25), {Position = Position}):Play()
+	end
+	Frame.InputBegan:Connect(function(input)
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and UIS:GetFocusedTextBox() == nil then
+			dragToggle = true
+			dragStart = input.Position
+			startPos = Frame.Position
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragToggle = false
+				end
+			end)
+		end
+	end)
+	Frame.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
+		end
+	end)
+	game:GetService("UserInputService").InputChanged:Connect(function(input)
+		if input == dragInput and dragToggle then
+			updateInput(input)
+		end
+	end)
+end
+
+dragify(frame)
